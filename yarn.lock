@@ -2838,24 +2838,24 @@
   resolved "https://registry.yarnpkg.com/@xtuc/long/-/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
 
-"@zippie/did-core@1.0.0-beta.6":
-  version "1.0.0-beta.6"
-  resolved "https://registry.yarnpkg.com/@zippie/did-core/-/did-core-1.0.0-beta.6.tgz#3e5d9bdf83d81b7a9a52a540f9c3f15cf73ae000"
-  integrity sha512-+zXb2ESOT/EK5mnb0zXaXJNc5YHgqIBBDeV/nokUFLB+zliZcKZNMrN4gaN2HhSC2ngqYRqTD9B1HeCI+g690A==
+"@zippie/did-core@1.0.0-beta.8":
+  version "1.0.0-beta.8"
+  resolved "https://registry.yarnpkg.com/@zippie/did-core/-/did-core-1.0.0-beta.8.tgz#7d95258eec5e1165d5ba24c0f917ffc463ca3867"
+  integrity sha512-OXzcj43hjuP5SoC9/iVwDPMPIHPfqgsERhqzqw8ucSI9oFUdXlrp3WQAMwhY9bTWaWKJ2WPgVdSD0K0y5gRXkQ==
   dependencies:
     ethers "^5.7.2"
 
-"@zippie/did-react-components@1.0.0-beta.6":
-  version "1.0.0-beta.6"
-  resolved "https://registry.yarnpkg.com/@zippie/did-react-components/-/did-react-components-1.0.0-beta.6.tgz#baca6c73ead6dca696b88b12385dc21ae8f1ded0"
-  integrity sha512-HQSbZVNmzwQPVPsJ8LSq9DU+YHdQChz2CBui3DheqwbRoQSCwDs8fZvoJvb9rmU7IUkdukJ31OsehgDncYWwXQ==
+"@zippie/did-react-components@1.0.0-beta.8":
+  version "1.0.0-beta.8"
+  resolved "https://registry.yarnpkg.com/@zippie/did-react-components/-/did-react-components-1.0.0-beta.8.tgz#eb131798dff17bc178899cf05f982512d8c4ccd9"
+  integrity sha512-6K/z9lGo6uEgwazC6DA0w1KZG57kByoID5iwdyXT0dD64eMYpa28uVZhf6JP3vHue85llogBQAp/dlvOg0W3wQ==
   dependencies:
     "@emotion/react" "^11.10.5"
     "@emotion/styled" "^11.10.5"
     "@mui/icons-material" "^5.10.9"
     "@mui/material" "^5.10.13"
     "@mui/styles" "^5.10.10"
-    "@zippie/did-core" "1.0.0-beta.6"
+    "@zippie/did-core" "1.0.0-beta.8"
     classnames "^2.3.2"
     react-countdown "^2.3.3"
     react-iframe "^1.8.5"

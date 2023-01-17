@@ -1,7 +1,7 @@
 {
-  "name": "verified-twitter-demo",
+  "name": "basic-did-example",
   "version": "1.0.0",
-  "description": "A demo DID which generates a VC for their twitter account.",
+  "description": "A demo application which demonstrates and allows interaction with DID.",
   "main": "src/index.tsx",
   "license": "MIT",
   "private": true,
@@ -11,7 +11,7 @@
     "start": "DISABLE_ESLINT_PLUGIN=true react-scripts start"
   },
   "dependencies": {
-    "@zippie/did-react-components": "1.0.0-beta.6",
+    "@zippie/did-react-components": "1.0.0-beta.8",
     "axios": "^1.1.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"

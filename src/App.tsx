@@ -55,9 +55,6 @@ const AppComponent: React.FC = () => {
   const { isReady, isAppSignedIn, isUserSignedIn, platform } = usePlatform()
   const [info, setInfo] = useState('')
 
-  if (!isReady) return <h4>Loading...</h4>
-  if (!isAppSignedIn) return <SignInPage />
-
   useEffect(() => {
     if (!isAppSignedIn) return
     const fetchInfo = async () => {
@@ -66,6 +63,9 @@ const AppComponent: React.FC = () => {
     }
     fetchInfo().catch(console.error)
   }, [isAppSignedIn])
+
+  if (!isReady) return <h4>Loading...</h4>
+  if (!isAppSignedIn) return <SignInPage />
 
   return <div>{info ? info : 'Loading'}</div>
 }
