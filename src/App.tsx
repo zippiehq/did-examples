@@ -2,15 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { IAppData, PermissionDesc, PlatformAgentUri, PlatformError } from '@zippie/did-core'
 
-import {
-  ButtonActions,
-  PlatformProvider,
-  RecoveryForm,
-  SecretButton,
-  SignInForm,
-  SignUpForm,
-  usePlatform,
-} from '@zippie/did-react-components'
+import { PlatformProvider, RecoveryForm, SignInForm, SignUpForm, usePlatform } from '@zippie/did-react-components'
 
 //
 // Permissions that this application needs the user to grant.
