@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App_did';
+import App from './App_didTest';
 import reportWebVitals from './reportWebVitals';
 import { PermissionDesc, PlatformAgentUri} from '@zippie/did-core'
 import { PlatformProvider } from '@zippie/did-react-components'

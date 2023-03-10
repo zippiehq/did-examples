@@ -69,7 +69,7 @@ function App() {
 
     const { isReady, isAppSignedIn, isUserSignedIn, platform } = usePlatform()
     const [ profile, setProfile ] = useState({});
-
+    const [ userInfo, setUserInfo ] = useState({});
     /*const login = useGoogleLogin({
         onSuccess: async (tokenResponse) => {
         await axios.get(
@@ -91,20 +91,26 @@ function App() {
 */
 
     if (!isReady) return <h4>Loading...</h4>
-  
+    /*if (isAppSignedIn) {
+      platform.getApplicationData().then((appData)=>{
+       setUserInfo(appData.userDetails);
+       console.log('User Info', appData);
+      });
+    }; */
+
   //  return <div>{info ? info : 'Loading'}</div>
     return (
         <div>
             <h2>React DID Login</h2>
             <br />
             <br />
-            {isAppSignedIn? (
+            {isAppSignedIn?(
                 <div>
-                    <img src={profile.picture} alt="user" />
+                    <img src={''} alt="user" />
                     <h3>User Logged in</h3>
-                    <p>Name: {profile.name}</p>
-                    <p>Email Address: {profile.email}</p>
-                    <p>User ID: {profile.sub}</p>
+                    <p>Name: {userInfo.name}</p>
+                    <p>Email Address: {userInfo.email}</p>
+                    <p>User ID: {''}</p>
                     <br />
                     <br />
                 </div>
