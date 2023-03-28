@@ -1,0 +1,40 @@
+{
+  "name": "verified-twitter-demo",
+  "version": "1.0.0",
+  "description": "A demo DID which generates a VC for their twitter account.",
+  "main": "src/index.tsx",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "clean": "rm -rf build",
+    "build": "DISABLE_ESLINT_PLUGIN=true react-scripts build",
+    "start": "DISABLE_ESLINT_PLUGIN=true react-scripts start"
+  },
+  "dependencies": {
+    "@zippie/did-react-components": "1.0.0-beta.12",
+    "axios": "^1.2.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router": "^6.4.3",
+    "react-router-dom": "^6.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.9",
+    "@types/react": "^18.0.27",
+    "@types/react-dom": "^18.0.9",
+    "react-scripts": "^5.0.1",
+    "typescript": "^4.8.4"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
