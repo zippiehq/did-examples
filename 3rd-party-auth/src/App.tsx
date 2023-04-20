@@ -1,32 +1,32 @@
 import React, { useEffect, useState } from 'react'
 
-import axios from 'axios'
-
-import { IAppData, PermissionDesc, PlatformAgentUri, PlatformError } from '@zippie/did-core'
+import { IAppData, PermissionDesc, BrowserAgentLocation, PlatformError } from '@zippie/did-core'
 import { PlatformProvider, RecoveryForm, SignInForm, SignUpForm, usePlatform } from '@zippie/did-react-components'
+import { backendAuthUser, backendCreateUser } from './mock-backend'
 
-//
 // Permissions that this application needs the user to grant.
-//
 const REQUESTED_PERMISSIONS = [PermissionDesc.READ_FULL_NAME, PermissionDesc.READ_EMAIL]
 
 //
-// Component which handles sign-up, sign-in, recovery, etc.
+// Component which handles sign-up, sign-in, recovery, flows.
 //
-const AuthPage: React.FC = () => {
+const AuthPage: React.FC<any> = ({ onAppSignedIn }) => {
   const [showSignUp, setShowSignUp] = useState<boolean>(false)
   const [showRecovery, setShowRecovery] = useState<boolean>(false)
 
-  const onSignInComplete = async (result: IAppData | PlatformError) => {
-    console.info('sign-in-result:', result)
+  const onSignUpComplete = async (result: IAppData | PlatformError) => {
+    console.info('sign-up-result:', result)
+    onAppSignedIn(true)
   }
 
-  const onSignUpComplete = (result: IAppData | PlatformError) => {
-    console.info('sign-up-result:', result)
+  const onSignInComplete = async (result: IAppData | PlatformError) => {
+    console.info('sign-in-result:', result)
+    onAppSignedIn(false)
   }
 
   const onRecoveryComplete = (result: IAppData | PlatformError) => {
     console.info('recovery-result:', result)
+    onAppSignedIn(false)
   }
 
   const onForgotPasswordClick = () => setShowRecovery(true)
@@ -45,34 +45,39 @@ const AuthPage: React.FC = () => {
 // platform APIs.
 //
 const AppComponent: React.FC<{ redirectTo: string }> = ({ redirectTo }) => {
-  const { appinfo, isReady, isAppSignedIn, userinfo, platform } = usePlatform()
+  const { appinfo, isReady, isAppSignedIn, platform } = usePlatform()
   const [token, setToken] = useState('')
 
+  // Handle DID application signed in
+  const onAppSignedIn = async (isNewUser: boolean) => {
+    // Get JsonWebToken from DID
+    const token = (await platform?.getJsonWebToken()) as string
+    setToken(token || '')
+    console.info(token)
+
+    let sessionId
+
+    // Get a new sessionId from backend service by either creating a new user or just authenticating
+    if (isNewUser) {
+      sessionId = await backendCreateUser(token)
+    } else {
+      sessionId = await backendAuthUser(token)
+    }
+
+    // Redirect to your app with sessionId, external app can then get user info stored under sessionId,
+    // check JWT for expiration, etc.
+    document.location = `${redirectTo}?sessionId=${sessionId}`
+  }
+
+  // This use effect is to handle the case where the user is already logged in to their DID
   useEffect(() => {
-    if (!isAppSignedIn || !appinfo || !userinfo) return
-    ;(async () => {
-      const token = (await platform?.getJsonWebToken()) as string
-      setToken(token || '')
-
-      // Call backend with JWT, backend verifies and stores JWT and responds with a sessionId,
-      // the sessionId is used to grab the JWT from the database.
-      const response = await axios.post('/verify', token)
-      const { sessionId } = response.data
-
-      // Make this request on backend to verify JWT token. Success will return 200 and jwt body.
-      // Validation failure will return 400
-      const verified = await axios.post('https://auditable-cryptor.sandbox.zippie.com', { jwt: token })
-      console.info(verified)
-
-      // Redirect to PHP app with sessionId, PHP app can then get user info stored under sessionId,
-      // check JWT for expiration, etc.
-      document.location = `${redirectTo}?sessionId=${sessionId}`
-    })()
-  }, [appinfo, isAppSignedIn])
+    if (!isAppSignedIn) return
+    console.info('pre-signed-in:', appinfo)
+    onAppSignedIn(false)
+  }, [isAppSignedIn])
 
   if (!isReady) return <h4>Loading...</h4>
-  if (!isAppSignedIn) return <AuthPage />
-
+  if (!isAppSignedIn) return <AuthPage {...{ setToken, onAppSignedIn }} />
   return <div style={{ fontFamily: 'monospace', whiteSpace: 'pre' }}>{token ? token : 'Loading'}</div>
 }
 
@@ -84,7 +89,7 @@ const AppComponent: React.FC<{ redirectTo: string }> = ({ redirectTo }) => {
 export default () => (
   <PlatformProvider
     clientId="ExampleApp"
-    agentUri={PlatformAgentUri.sandbox}
+    agentUri={BrowserAgentLocation.Sandbox}
     permissions={REQUESTED_PERMISSIONS}
     config={{}}
   >
