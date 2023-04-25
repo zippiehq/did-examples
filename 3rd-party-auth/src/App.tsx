@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
 import { IAppData, PermissionDesc, BrowserAgentLocation, PlatformError } from '@zippie/did-core'
 import { PlatformProvider, RecoveryForm, SignInForm, SignUpForm, usePlatform } from '@zippie/did-react-components'
@@ -87,7 +87,7 @@ const AppComponent: React.FC<{ redirectTo: string }> = ({ redirectTo }) => {
 export default () => (
   <PlatformProvider
     clientId="ExampleApp"
-    agentUri={'http://localhost:3200'}
+    agentUri={BrowserAgentLocation.Sandbox}
     permissions={REQUESTED_PERMISSIONS}
     config={{}}
   >
