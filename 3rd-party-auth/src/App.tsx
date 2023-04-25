@@ -33,9 +33,14 @@ const AuthPage: React.FC<any> = ({ onAppSignedIn }) => {
   const onSignInButtonClick = () => setShowSignUp(false)
   const onSignUpClick = () => setShowSignUp(true)
 
-  if (showRecovery) return <RecoveryForm {...{ onRecoveryComplete }} />
-  if (showSignUp)
+  if (showRecovery) {
+    return <RecoveryForm {...{ onRecoveryComplete }} />
+  }
+
+  if (showSignUp) {
     return <SignUpForm termsLink="" {...{ onSignInButtonClick, onSignUpComplete, onForgotPasswordClick }} />
+  }
+
   return <SignInForm {...{ onSignInComplete, onForgotPasswordClick, onSignUpClick }} />
 }
 
@@ -48,8 +53,13 @@ const AppComponent: React.FC<{ redirectTo: string }> = ({ redirectTo }) => {
   const { appinfo, isReady, isAppSignedIn, platform } = usePlatform()
   const [token, setToken] = useState('')
 
+  const [showAuthPage, setShowAuthPage] = useState<boolean>(true)
+
   // Handle DID application signed in
   const onAppSignedIn = async (isNewUser: boolean) => {
+    // We're logged in so no need to display sign-in flow.
+    setShowAuthPage(false)
+
     // Get JsonWebToken from DID
     const token = (await platform?.getJsonWebToken()) as string
     setToken(token || '')
@@ -69,15 +79,8 @@ const AppComponent: React.FC<{ redirectTo: string }> = ({ redirectTo }) => {
     document.location = `${redirectTo}?sessionId=${sessionId}`
   }
 
-  // This use effect is to handle the case where the user is already logged in to their DID
-  useEffect(() => {
-    if (!isAppSignedIn) return
-    console.info('pre-signed-in:', appinfo)
-    onAppSignedIn(false)
-  }, [isAppSignedIn])
-
   if (!isReady) return <h4>Loading...</h4>
-  if (!isAppSignedIn) return <AuthPage {...{ setToken, onAppSignedIn }} />
+  if (showAuthPage) return <AuthPage {...{ setToken, onAppSignedIn }} />
   return <div style={{ fontFamily: 'monospace', whiteSpace: 'pre' }}>{token ? token : 'Loading'}</div>
 }
 
@@ -89,7 +92,7 @@ const AppComponent: React.FC<{ redirectTo: string }> = ({ redirectTo }) => {
 export default () => (
   <PlatformProvider
     clientId="ExampleApp"
-    agentUri={BrowserAgentLocation.Sandbox}
+    agentUri={'http://localhost:3200'}
     permissions={REQUESTED_PERMISSIONS}
     config={{}}
   >
