@@ -33,14 +33,9 @@ const AuthPage: React.FC<any> = ({ onAppSignedIn }) => {
   const onSignInButtonClick = () => setShowSignUp(false)
   const onSignUpClick = () => setShowSignUp(true)
 
-  if (showRecovery) {
-    return <RecoveryForm {...{ onRecoveryComplete }} />
-  }
-
-  if (showSignUp) {
+  if (showRecovery) return <RecoveryForm {...{ onRecoveryComplete }} />
+  if (showSignUp)
     return <SignUpForm termsLink="" {...{ onSignInButtonClick, onSignUpComplete, onForgotPasswordClick }} />
-  }
-
   return <SignInForm {...{ onSignInComplete, onForgotPasswordClick, onSignUpClick }} />
 }
 
