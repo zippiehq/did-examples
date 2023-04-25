@@ -45,7 +45,7 @@ const AuthPage: React.FC<any> = ({ onAppSignedIn }) => {
 // platform APIs.
 //
 const AppComponent: React.FC<{ redirectTo: string }> = ({ redirectTo }) => {
-  const { appinfo, isReady, isAppSignedIn, platform } = usePlatform()
+  const { isReady, platform } = usePlatform()
   const [token, setToken] = useState('')
 
   const [showAuthPage, setShowAuthPage] = useState<boolean>(true)
