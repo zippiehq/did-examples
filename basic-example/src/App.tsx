@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { IAppData, PermissionDesc, PlatformAgentUri, PlatformError } from '@zippie/did-core'
 
 import { PlatformProvider, RecoveryForm, SignInForm, SignUpForm, usePlatform } from '@zippie/did-react-components'
+import { backendAuthUser, backendCreateUser } from './mock-backend'
 
 //
 // Permissions that this application needs the user to grant.
@@ -43,10 +44,36 @@ const SignInPage: React.FC = () => {
 // us to use the "usePlatform()" hook to start interacting with a users identity through the
 // platform APIs.
 //
-const AppComponent: React.FC = () => {
+const AppComponent: React.FC<{ redirectTo: string }> = ({ redirectTo }) => {
   const { isReady, isAppSignedIn, isUserSignedIn, platform } = usePlatform()
   const [info, setInfo] = useState('')
+  const [token, setToken] = useState('')
 
+  const [showAuthPage, setShowAuthPage] = useState<boolean>(true)
+
+  // Handle DID application signed in
+  const onAppSignedIn = async (isNewUser: boolean) => {
+    // We're logged in so no need to display sign-in flow.
+    setShowAuthPage(false)
+
+    // Get JsonWebToken from DID
+    const token = (await platform?.getJsonWebToken()) as string
+    setToken(token || '')
+    console.info(token)
+
+    let sessionId
+
+    // Get a new sessionId from backend service by either creating a new user or just authenticating
+    if (isNewUser) {
+      sessionId = await backendCreateUser(token)
+    } else {
+      sessionId = await backendAuthUser(token)
+    }
+
+    // Redirect to your app with sessionId, external app can then get user info stored under sessionId,
+    // check JWT for expiration, etc.
+    document.location = `${redirectTo}?sessionId=${sessionId}`
+  }
   useEffect(() => {
     if (!isAppSignedIn) return
     const fetchInfo = async () => {
@@ -74,6 +101,6 @@ export default () => (
     permissions={REQUESTED_PERMISSIONS}
     config={{}}
   >
-    <AppComponent />
+    <AppComponent redirectTo={'http://localhost:3000'} />
   </PlatformProvider>
 )
