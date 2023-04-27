@@ -14,7 +14,6 @@ import {
 } from '@zippie/did-react-components'
 
 import { OAuth2Provider, useOAuth2 } from './hooks/useOAuth2'
-import { backendAuthUser, backendCreateUser } from './mock-backend'
 
 //
 // Permissions that this application needs the user to grant.
@@ -55,37 +54,9 @@ const SignInPage: React.FC = () => {
 // us to use the "usePlatform()" hook to start interacting with a users identity through the
 // platform APIs.
 //
-const AppComponent: React.FC<{ redirectTo: string }> = ({ redirectTo }) => {
-  const { isReady, isAppSignedIn, isUserSignedIn, platform } = usePlatform()
-  const { isLoading, isAuthorized, authorize } = useOAuth2()
-
-  const [token, setToken] = useState('')
-
-  const [showAuthPage, setShowAuthPage] = useState<boolean>(true)
-
-  // Handle DID application signed in
-  const onAppSignedIn = async (isNewUser: boolean) => {
-    // We're logged in so no need to display sign-in flow.
-    setShowAuthPage(false)
-
-    // Get JsonWebToken from DID
-    const token = (await platform?.getJsonWebToken()) as string
-    setToken(token || '')
-    console.info(token)
-
-    let sessionId
-
-    // Get a new sessionId from backend service by either creating a new user or just authenticating
-    if (isNewUser) {
-      sessionId = await backendCreateUser(token)
-    } else {
-      sessionId = await backendAuthUser(token)
-    }
-
-    // Redirect to your app with sessionId, external app can then get user info stored under sessionId,
-    // check JWT for expiration, etc.
-    document.location = `${redirectTo}?sessionId=${sessionId}`
-  }
+const AppComponent: React.FC = () => {
+  const { isReady, isAppSignedIn, isUserSignedIn } = usePlatform()
+  const { isLoading, isAuthorized, authorize, token } = useOAuth2()
 
   console.info({ isReady, isAppSignedIn, isUserSignedIn })
   console.info({ isLoading, isAuthorized })
@@ -152,7 +123,7 @@ export default () => (
         clientId="RWNjejBMRnN4WFRiLVpjZjUwVEo6MTpjaQ"
         scope={['tweet.read', 'users.read', 'offline.access']}
       >
-        <AppComponent redirectTo={'http://localhost:3000'} />
+        <AppComponent />
       </OAuth2Provider>
     </BrowserRouter>
   </PlatformProvider>
