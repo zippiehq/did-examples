@@ -13,13 +13,13 @@ const REQUESTED_PERMISSIONS = [PermissionDesc.READ_FULL_NAME, PermissionDesc.REA
 //
 // Component which handles sign-up, sign-in, recovery, etc.
 //
-const SignInPage: React.FC<any> = ({ setShowAuthPage }) => {
+const SignInPage: React.FC<any> = ({ setShowAuthPage, setInfo }) => {
   const [showSignUp, setShowSignUp] = useState<boolean>(false)
   const [showRecovery, setShowRecovery] = useState<boolean>(false)
-  const [info, setInfo] = useState('')
 
   const onSignInComplete = async (result: IAppData | PlatformError) => {
     backendCreateUser((result as IAppData).publicKey)
+    setInfo((result as IAppData).userDetails.username)
     setShowAuthPage(false)
   }
 
@@ -50,13 +50,13 @@ const SignInPage: React.FC<any> = ({ setShowAuthPage }) => {
 //
 const AppComponent: React.FC = () => {
   const { isReady, platform } = usePlatform()
-  const [token, setToken] = useState('')
+  const [info, setInfo] = useState('')
   //variable to decide whether to show the sign-in flow
   const [showAuthPage, setShowAuthPage] = useState<boolean>(true)
 
   if (!isReady) return <h4>Loading...</h4>
-  if (showAuthPage) return <SignInPage {...{ setShowAuthPage }} />
-  return <div style={{ fontFamily: 'monospace', whiteSpace: 'pre' }}>{token ? token : 'Loading'}</div>
+  if (showAuthPage) return <SignInPage {...{ setShowAuthPage, setInfo }} />
+  return <div style={{ fontFamily: 'monospace', whiteSpace: 'pre' }}>{info ? 'signed-in as: ' + info : 'Loading'}</div>
 }
 
 //
