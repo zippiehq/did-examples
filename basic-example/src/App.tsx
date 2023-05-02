@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { IAppData, PermissionDesc, PlatformAgentUri, PlatformError } from '@zippie/did-core'
 
 import { PlatformProvider, RecoveryForm, SignInForm, SignUpForm, usePlatform } from '@zippie/did-react-components'
+import { backendCreateUser } from './mock-backend'
 
 //
 // Permissions that this application needs the user to grant.
@@ -12,20 +13,24 @@ const REQUESTED_PERMISSIONS = [PermissionDesc.READ_FULL_NAME, PermissionDesc.REA
 //
 // Component which handles sign-up, sign-in, recovery, etc.
 //
-const SignInPage: React.FC = () => {
+const SignInPage: React.FC<any> = ({ setShowAuthPage }) => {
   const [showSignUp, setShowSignUp] = useState<boolean>(false)
   const [showRecovery, setShowRecovery] = useState<boolean>(false)
+  const [info, setInfo] = useState('')
 
   const onSignInComplete = async (result: IAppData | PlatformError) => {
-    console.info('sign-in-result:', result)
+    backendCreateUser((result as IAppData).publicKey)
+    setShowAuthPage(false)
   }
 
   const onSignUpComplete = (result: IAppData | PlatformError) => {
     console.info('sign-up-result:', result)
+    setShowAuthPage(false)
   }
 
   const onRecoveryComplete = (result: IAppData | PlatformError) => {
     console.info('recovery-result:', result)
+    setShowAuthPage(false)
   }
 
   const onForgotPasswordClick = () => setShowRecovery(true)
@@ -44,22 +49,14 @@ const SignInPage: React.FC = () => {
 // platform APIs.
 //
 const AppComponent: React.FC = () => {
-  const { isReady, isAppSignedIn, isUserSignedIn, platform } = usePlatform()
-  const [info, setInfo] = useState('')
-
-  useEffect(() => {
-    if (!isAppSignedIn) return
-    const fetchInfo = async () => {
-      const response = await platform?.getDerivedKeyInfo('m/0/1')
-      setInfo(JSON.stringify(response, null, 2))
-    }
-    fetchInfo().catch(console.error)
-  }, [isAppSignedIn])
+  const { isReady, platform } = usePlatform()
+  const [token, setToken] = useState('')
+  //variable to decide whether to show the sign-in flow
+  const [showAuthPage, setShowAuthPage] = useState<boolean>(true)
 
   if (!isReady) return <h4>Loading...</h4>
-  if (!isAppSignedIn) return <SignInPage />
-
-  return <div>{info ? info : 'Loading'}</div>
+  if (showAuthPage) return <SignInPage {...{ setShowAuthPage }} />
+  return <div style={{ fontFamily: 'monospace', whiteSpace: 'pre' }}>{token ? token : 'Loading'}</div>
 }
 
 //
