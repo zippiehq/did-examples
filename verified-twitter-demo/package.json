@@ -1,29 +1,27 @@
 {
-  "name": "third-party-auth",
+  "name": "verified-twitter-demo",
   "version": "1.0.0",
-  "description": "A demo application which demonstrates and allows interaction with DID.",
+  "description": "A demo DID which generates a VC for their twitter account.",
   "main": "src/index.tsx",
   "license": "MIT",
   "private": true,
   "scripts": {
     "clean": "rm -rf build",
     "build": "DISABLE_ESLINT_PLUGIN=true react-scripts build",
-    "start": "cross-env DISABLE_ESLINT_PLUGIN=true react-scripts start"
+    "start": "DISABLE_ESLINT_PLUGIN=true react-scripts start"
   },
   "dependencies": {
     "@zippie/did-react-components": "1.0.0-beta.18",
     "axios": "^1.3.5",
-    "cross-env": "^7.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "secp256k1": "^5.0.0",
-    "sha.js": "^2.4.11"
+    "react-router": "^6.4.3",
+    "react-router-dom": "^6.4.3"
   },
   "devDependencies": {
     "@types/node": "^18.11.9",
-    "@types/react": "^18.0.25",
+    "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.9",
-    "@types/secp256k1": "^4.0.3",
     "react-scripts": "^5.0.1",
     "typescript": "^4.8.4"
   },
