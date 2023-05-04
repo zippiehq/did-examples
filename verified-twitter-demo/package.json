@@ -11,7 +11,7 @@
     "start": "DISABLE_ESLINT_PLUGIN=true react-scripts start"
   },
   "dependencies": {
-    "@zippie/did-react-components": "1.0.0-beta.18",
+    "@zippie/did-react-components": "1.0.0-beta.17",
     "axios": "^1.3.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
