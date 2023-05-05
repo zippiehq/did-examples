@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
+// import Did modules
 import { IAppData, PermissionDesc, PlatformAgentUri, PlatformError } from '@zippie/did-core'
 
 import { PlatformProvider, RecoveryForm, SignInForm, SignUpForm, usePlatform } from '@zippie/did-react-components'
@@ -33,10 +34,12 @@ const SignInPage: React.FC<any> = ({ setShowAuthPage, setInfo }) => {
     setShowAuthPage(false)
   }
 
+  // handle user interaction
   const onForgotPasswordClick = () => setShowRecovery(true)
   const onSignInButtonClick = () => setShowSignUp(false)
   const onSignUpClick = () => setShowSignUp(true)
 
+  //customise the ready made flows views
   if (showRecovery) return <RecoveryForm {...{ onRecoveryComplete }} />
   if (showSignUp)
     return <SignUpForm termsLink="" {...{ onSignInButtonClick, onSignUpComplete, onForgotPasswordClick }} />
@@ -44,7 +47,7 @@ const SignInPage: React.FC<any> = ({ setShowAuthPage, setInfo }) => {
 }
 
 //
-//   The default export of this file wraps this component in a PlatformProvider, which allows
+// The default export of this file wraps this component in a PlatformProvider, which allows
 // us to use the "usePlatform()" hook to start interacting with a users identity through the
 // platform APIs.
 //
@@ -54,7 +57,9 @@ const AppComponent: React.FC = () => {
   //variable to decide whether to show the sign-in flow
   const [showAuthPage, setShowAuthPage] = useState<boolean>(true)
 
+  // check if DID is ready
   if (!isReady) return <h4>Loading...</h4>
+
   if (showAuthPage) return <SignInPage {...{ setShowAuthPage, setInfo }} />
   return <div style={{ fontFamily: 'monospace', whiteSpace: 'pre' }}>{info ? 'signed-in as: ' + info : 'Loading'}</div>
 }
