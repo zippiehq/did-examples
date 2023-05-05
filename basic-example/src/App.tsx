@@ -59,7 +59,6 @@ const AppComponent: React.FC = () => {
 
   // check if DID is ready
   if (!isReady) return <h4>Loading...</h4>
-
   if (showAuthPage) return <SignInPage {...{ setShowAuthPage, setInfo }} />
   return <div style={{ fontFamily: 'monospace', whiteSpace: 'pre' }}>{info ? 'signed-in as: ' + info : 'Loading'}</div>
 }
