@@ -84,13 +84,27 @@ const AppComponent: React.FC<{ redirectTo: string }> = ({ redirectTo }) => {
 // and manages an instance of the BrowserPlatformApi, as well as binding it into a nice
 // ReactJS interface with dynamic props and everything.
 //
-export default () => (
-  <PlatformProvider
-    clientId="ExampleApp"
-    agentUri={BrowserAgentLocation.Sandbox}
-    permissions={REQUESTED_PERMISSIONS}
-    config={{}}
-  >
-    <AppComponent redirectTo={'http://localhost:3000'} />
-  </PlatformProvider>
-)
+export default () => {
+  const isLogout = document.location.toString().includes('logout')
+
+  if (isLogout) {
+    console.info('Application logging out.')
+    // XXX - Use platform.logout() in next release.
+    localStorage.removeItem('z-did-appinfo')
+    localStorage.removeItem('z-did-key-info')
+
+    document.location = document.referrer
+    return
+  }
+
+  return (
+    <PlatformProvider
+      clientId="ExampleApp"
+      agentUri={BrowserAgentLocation.Sandbox}
+      permissions={REQUESTED_PERMISSIONS}
+      config={{}}
+    >
+      <AppComponent redirectTo={'http://localhost:3000'} />
+    </PlatformProvider>
+  )
+}
