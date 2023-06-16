@@ -85,17 +85,15 @@ const AppComponent: React.FC<{ redirectTo: string }> = ({ redirectTo }) => {
 // ReactJS interface with dynamic props and everything.
 //
 export default () => {
-  const params = new URLSearchParams(document.location.hash?.slice(1))
   const isLogout = document.location.toString().includes('logout')
 
   if (isLogout) {
     console.info('Application logging out.')
-
     // XXX - Use platform.logout() in next release.
     localStorage.removeItem('z-did-appinfo')
     localStorage.removeItem('z-did-key-info')
 
-    document.location = params.get('redirectTo') || 'https://zippie.com'
+    document.location = document.referrer
     return
   }
 
