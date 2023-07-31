@@ -24,9 +24,9 @@ const AuthPage: React.FC<any> = ({ onAppSignedIn }) => {
     onAppSignedIn(false)
   }
 
-  const onRecoveryComplete = (result: IAppData | PlatformError) => {
-    console.info('recovery-result:', result)
-    onAppSignedIn(false)
+  const onRecoveryComplete = () => {
+    console.info('recovery-complete')
+    setShowRecovery(false)
   }
 
   const onForgotPasswordClick = () => setShowRecovery(true)
